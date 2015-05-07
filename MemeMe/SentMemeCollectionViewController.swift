@@ -19,19 +19,25 @@ class SentMemeCollectionViewController: UICollectionViewController{
     }
     func editButton()
     {
+        let tabBarItemTable = self.tabBarController?.tabBar.items?[0] as? UITabBarItem
+        let tabBarItemCollection = self.tabBarController?.tabBar.items?[1] as? UITabBarItem
         if(self.navigationItem.leftBarButtonItem?.title == "Edit")
         {
             self.navigationItem.leftBarButtonItem?.title = "Done"
             self.backToMeme.enabled = false
+            tabBarItemTable?.enabled = false
+            tabBarItemCollection?.enabled = false
         }
         else
         {
             self.navigationItem.leftBarButtonItem?.title = "Edit"
             self.backToMeme.enabled = true
+            tabBarItemTable?.enabled = true
+            tabBarItemCollection?.enabled = true
         }
     }
     override func viewWillAppear(animated: Bool) {
-        MyMeme = (UIApplication.sharedApplication().delegate as AppDelegate).memes
+        MyMeme = (UIApplication.sharedApplication().delegate as! AppDelegate).memes
         self.collectionView?.reloadData()
     }
     
@@ -39,7 +45,7 @@ class SentMemeCollectionViewController: UICollectionViewController{
         return MyMeme.count
     }
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("MemeCollectionViewCell", forIndexPath: indexPath) as MemeCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("MemeCollectionViewCell", forIndexPath: indexPath) as! MemeCollectionViewCell
         cell.backgroundColor = UIColor.blackColor()
         cell.memeImage.image = MyMeme[indexPath.row].memeImage
         return cell
@@ -48,17 +54,21 @@ class SentMemeCollectionViewController: UICollectionViewController{
         if(self.navigationItem.leftBarButtonItem?.title == "Edit")
         {
             var rvController: MemeViewController
-            rvController = self.storyboard?.instantiateViewControllerWithIdentifier("MemeViewController") as MemeViewController
+            rvController = self.storyboard?.instantiateViewControllerWithIdentifier("MemeViewController") as! MemeViewController
             
             rvController.memeImage = MyMeme[indexPath.row].memeImage
             self.navigationController?.pushViewController(rvController, animated: true)
         }
         else
         {
+            //**********
+            //alertView source code example stackOverflow
+            //http://stackoverflow.com/questions/25511945/swift-alert-view-ios8-with-ok-and-cancel-button-which-button-tapped
+            //**********
             let alertView = UIAlertController(title: "MeMeme", message: "Remove this Meme?", preferredStyle: .Alert)
             alertView.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (alertAction) -> Void in
                 [self.MyMeme .removeAtIndex(indexPath.row)]
-                (UIApplication.sharedApplication().delegate as AppDelegate).memes = self.MyMeme
+                (UIApplication.sharedApplication().delegate as! AppDelegate).memes = self.MyMeme
                 self.collectionView?.deleteItemsAtIndexPaths([indexPath])
             }))
             alertView.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
@@ -70,7 +80,7 @@ class SentMemeCollectionViewController: UICollectionViewController{
     }
      @IBAction func backToMemeEditor()
     {
-        let controller = self.storyboard?.instantiateViewControllerWithIdentifier("MemeEditorView") as UINavigationController
+        let controller = self.storyboard?.instantiateViewControllerWithIdentifier("MemeEditorView") as! UINavigationController
         self.navigationController?.presentViewController(controller, animated: true, completion: nil)
 
     }

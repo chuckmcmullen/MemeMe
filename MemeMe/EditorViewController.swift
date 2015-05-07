@@ -80,7 +80,7 @@ UINavigationControllerDelegate,UITextFieldDelegate {
     func saveMeme()
     {
         var meme = Meme(topString: self.topTextfield.text, bottomString: self.bottomTextfield.text, orgImage: self.memeMeImage.image!, memeImage: self.modifiedMemeImage)
-        (UIApplication.sharedApplication().delegate as AppDelegate).memes.append(meme)
+        (UIApplication.sharedApplication().delegate as! AppDelegate).memes.append(meme)
     }
     @IBAction func pickImageButton(sendor: UIBarButtonItem)
     {
@@ -140,7 +140,7 @@ UINavigationControllerDelegate,UITextFieldDelegate {
         if self.bottomTextfield.editing
         {
             let userInfo = notification.userInfo
-            let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as NSValue
+            let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
             return keyboardSize.CGRectValue().height
         }else
         {
@@ -163,26 +163,26 @@ UINavigationControllerDelegate,UITextFieldDelegate {
         self.navigationController?.navigationBar.hidden = false
         return memedImage
     }
-    func frameForImage(image: UIImage,imageView: UIImageView) -> CGRect
-    {
-        let imageRatio : CGFloat =  image.size.width / image.size.height
-        let viewRatio : CGFloat = imageView.frame.size.width / imageView.frame.size.height
-    
-        if(imageRatio < viewRatio)
-        {
-            let scale : CGFloat = imageView.frame.size.height / image.size.height
-            let width : CGFloat = scale * image.size.width
-            let topLeftX : CGFloat = (imageView.frame.size.width - width) * 0.5
-            return CGRectMake(topLeftX, 0, width, imageView.frame.size.height)
-        }
-        else
-        {
-            let  scale : CGFloat = imageView.frame.size.width / image.size.width;
-            let  height : CGFloat = scale * image.size.height;
-            let  topLeftY : CGFloat = (imageView.frame.size.height - height) * 0.5;
-            return CGRectMake(0, topLeftY, imageView.frame.size.width, height);
-        }
-    }
+//    func frameForImage(image: UIImage,imageView: UIImageView) -> CGRect
+//    {
+//        let imageRatio : CGFloat =  image.size.width / image.size.height
+//        let viewRatio : CGFloat = imageView.frame.size.width / imageView.frame.size.height
+//    
+//        if(imageRatio < viewRatio)
+//        {
+//            let scale : CGFloat = imageView.frame.size.height / image.size.height
+//            let width : CGFloat = scale * image.size.width
+//            let topLeftX : CGFloat = (imageView.frame.size.width - width) * 0.5
+//            return CGRectMake(topLeftX, 0, width, imageView.frame.size.height)
+//        }
+//        else
+//        {
+//            let  scale : CGFloat = imageView.frame.size.width / image.size.width;
+//            let  height : CGFloat = scale * image.size.height;
+//            let  topLeftY : CGFloat = (imageView.frame.size.height - height) * 0.5;
+//            return CGRectMake(0, topLeftY, imageView.frame.size.width, height);
+//        }
+//    }
     
     
     
@@ -194,9 +194,6 @@ UINavigationControllerDelegate,UITextFieldDelegate {
     
     func presentSentMeme()
     {
-//        var rvController: UITabBarController
-//        rvController = self.storyboard?.instantiateViewControllerWithIdentifier("SentMemeTab") as UITabBarController
-//        self.navigationController?.presentViewController(rvController, animated: true, completion: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
